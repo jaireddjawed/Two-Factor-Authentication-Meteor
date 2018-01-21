@@ -18,6 +18,7 @@
         "secret": "",
         "loginStyle": "popup"
       }
-    }
+    },
+    "authy": "__Your__Twilio__Authy__Key__"
   }
 }
