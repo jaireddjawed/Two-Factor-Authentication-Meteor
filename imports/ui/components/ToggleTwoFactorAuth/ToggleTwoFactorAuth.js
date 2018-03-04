@@ -40,8 +40,6 @@ class ToggleTwoFactorAuth extends React.Component {
                 <td className="center-vertical text-right">
                   <ToggleSwitch
                     toggled={twoFactorAuthenticationEnabled}
-                    onLabel="On"
-                    offLabel="Off"
                     onToggle={this.handleToggle}
                   />
                 </td>

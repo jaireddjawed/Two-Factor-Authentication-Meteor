@@ -50,21 +50,7 @@ class VerifyCodeAndLogin extends React.Component {
 
   renderResendVerificationCode() {
     const { renderResendVerificationCode } = this.state;
-    return (
-      <Modal
-        show={renderResendVerificationCode}
-        onHide={this.toggleResendVerificationCodeForm}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title">
-            Resend Code
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ResendCode onClose={this.toggleResendVerificationCodeForm} />
-        </Modal.Body>
-      </Modal>
-    );
+    return <ResendCode show={renderResendVerificationCode} onClose={this.toggleResendVerificationCodeForm} />
   }
 
   render() {

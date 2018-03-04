@@ -1,28 +1,28 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Meteor } from 'meteor/meteor';
-import { Bert } from 'meteor/themeteorchef:bert';
 import './ToggleSwitch.scss';
 
 class ToggleSwitch extends React.Component {
   constructor(props) {
     super(props);
-    const initialToggleState = props.toggled;
-    this.state = { toggled: initialToggleState };
+    const { toggled } = this.props;
+    this.state = { toggled };
     this.toggleSwitch = this.toggleSwitch.bind(this);
   }
 
   toggleSwitch() {
     const { toggled } = this.state;
+    const { onToggle } = this.props;
     this.setState({ toggled: !toggled });
     this.checkbox.checked = !toggled;
-    this.props.onToggle();
+    onToggle();
   }
 
   render() {
-    const { onLabel, offLabel } = this.props;
     const { toggled } = this.state;
+    const { onLabel, offLabel } = this.props;
+
     return (
       <div
         className={`ToggleSwitch ${toggled ? 'yes' : 'no'}`}
