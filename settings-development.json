@@ -19,6 +19,6 @@
         "loginStyle": "popup"
       }
     },
-    "authy": "ipkXGlDcpLKo41tlgG1THSfrJbailvhb"
+    "authy": "YOUR_AUTHY_API_KEY"
   }
 }
