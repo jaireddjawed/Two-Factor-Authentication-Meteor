@@ -3,7 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
-import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Bert } from 'meteor/themeteorchef:bert';
@@ -17,11 +16,8 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getUserType = this.getUserType.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.renderOAuthUser = this.renderOAuthUser.bind(this);
     this.renderPasswordUser = this.renderPasswordUser.bind(this);
-    this.renderProfileForm = this.renderProfileForm.bind(this);
   }
 
   componentDidMount() {
@@ -40,16 +36,11 @@ class Profile extends React.Component {
           email: true,
         },
         currentPassword: {
-          required() {
-            // Only required if newPassword field has a value.
-            return component.newPassword.value.length > 0;
-          },
+          required: true,
         },
         newPassword: {
-          required() {
-            // Only required if currentPassword field has a value.
-            return component.currentPassword.value.length > 0;
-          },
+          required: true,
+          minlength: 6,
         },
       },
       messages: {
@@ -72,13 +63,6 @@ class Profile extends React.Component {
       },
       submitHandler() { component.handleSubmit(); },
     });
-  }
-
-  getUserType(user) {
-    const userToCheck = user;
-    delete userToCheck.services.resume;
-    const service = Object.keys(userToCheck.services)[0];
-    return service === 'password' ? 'password' : 'oauth';
   }
 
   handleSubmit() {
@@ -110,29 +94,6 @@ class Profile extends React.Component {
         }
       });
     }
-  }
-
-  renderOAuthUser(loading, user) {
-    return !loading ? (
-      <div className="OAuthProfile">
-        {Object.keys(user.services).map(service => (
-          <div key={service} className={`LoggedInWith ${service}`}>
-            <img src={`/${service}.svg`} alt={service} />
-            <p>{`You're logged in with ${_.capitalize(service)} using the email address ${user.services[service].email}.`}</p>
-            <Button
-              className={`btn btn-${service}`}
-              href={{
-                facebook: 'https://www.facebook.com/settings',
-                google: 'https://myaccount.google.com/privacy#personalinfo',
-                github: 'https://github.com/settings/profile',
-              }[service]}
-              target="_blank"
-            >
-              Edit Profile on {_.capitalize(service)}
-            </Button>
-          </div>
-        ))}
-      </div>) : <div />;
   }
 
   renderPasswordUser(loading, user) {
@@ -198,22 +159,16 @@ class Profile extends React.Component {
     ) : <div />;
   }
 
-  renderProfileForm(loading, user) {
-    return !loading ? ({
-      password: this.renderPasswordUser,
-      oauth: this.renderOAuthUser,
-    }[this.getUserType(user)])(loading, user) : <div />;
-  }
-
   render() {
     const { loading, user } = this.props;
+
     return (
       <div className="Profile">
         <Row>
           <Col xs={12} sm={6} md={4}>
             <h4 className="page-header">Edit Profile</h4>
             <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
-              {this.renderProfileForm(loading, user)}
+              {this.renderPasswordUser(loading, user)}
             </form>
           </Col>
         </Row>
